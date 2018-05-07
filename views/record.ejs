@@ -1,0 +1,121 @@
+<script src="/script/MediaStreamRecorder.min.js"></script>
+
+<div class="text-center">
+    <button id="start-record" type="button" class="btn btn-outline-dark btn-lg">Start</button>
+    <button id="stop-record" type="button" class="btn btn-outline-dark btn-lg" style="display: none;">Stop</button>
+    <button id="get-record" type="button" class="btn btn-outline-info btn-lg" style="display: none;">Get your record here</button>
+
+    <p id="res-message"></p>
+</div>
+
+<div class="text-center">
+<% for(var i=1; i <= pageval; i++) { %>
+    <button id="start-record" type="button" class="btn btn-outline-dark btn-lg" onclick="play(<%- i %>);">Play</button>
+    <audio id="audio-<%- i %>" src="/audio/mc-<%- pageid %>-<%- i %>.wav" ></audio>
+<% } %>
+
+<div id="qrcode"></div>
+</div>
+
+<p><%- pageval %></p>
+
+<script src="/script/qrcode.min.js"></script>
+<script>
+function play(pageid){
+  var audio = document.getElementById("audio-"+pageid);
+  audio.play();
+}
+var current_URL = window.location.href;
+new QRCode(document.getElementById("qrcode"), current_URL);
+
+var mediaConstraints = {
+    audio: true
+};
+
+var mediaRecorder, record_id = '';
+var pageval = <%- pageval %>;
+
+function captureUserMedia(mediaConstraints, successCallback, errorCallback) {
+    navigator.getUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
+}
+
+document.querySelector('#start-record').onclick = function() {
+    // this.disabled = true;
+    captureUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
+    this.style.display = 'none';
+    document.querySelector('#stop-record').style.display    = '';
+    document.querySelector('#get-record').style.display     = 'none';
+};
+
+document.querySelector('#stop-record').onclick = function() {
+    // this.disabled = true;
+    mediaRecorder.stop();
+    this.style.display = 'none';
+    document.querySelector('#start-record').style.display   = '';
+    document.querySelector('#start-record').textContent     = 'Restart';
+    document.querySelector('#get-record').style.display     = '';
+};
+
+document.querySelector('#get-record').onclick = function() {
+    // this.disabled = true;
+    if (record_id != '') {
+        target = '/record/'+record_id;
+        window.location.href = target;
+    }
+    else {
+        document.querySelector('#res-message').textContent  = 'Record Failed, click Restart';
+    }
+};
+
+function onMediaSuccess(stream) {
+    mediaRecorder = new MediaStreamRecorder(stream);
+    mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
+    mediaRecorder.ondataavailable = function (blob) {
+        // POST/PUT "Blob" using FormData/XHR2
+        uploadToServer(blob);
+    };
+    mediaRecorder.start(15000);
+}
+
+function onMediaError(e) {
+    console.error('media error', e);
+}
+
+function uploadToServer(blob) {
+    pageval = pageval + 1;
+
+    var file = new File([blob], 'mc-<%- pageid %>-' + pageval + '.wav', {
+        type: 'audio/wav'
+    });
+
+    // create FormData
+    var formData = new FormData();
+    formData.append('audiofilename', file.name);
+    formData.append('audioblob', file);
+    formData.append('id', '<%- pageid %>');
+    formData.append('_csrf', '<%- csrfToken %>');
+
+    makeXMLHttpRequest('/api/record', formData, function(response) {
+        record_id = response;
+    });
+}
+
+function makeXMLHttpRequest(url, data, callback) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState == 4 && request.status == 200) {
+            callback(request.responseText)
+        }
+    };
+    request.open('POST', url);
+    request.send(data);
+}
+</script>
+ <style>
+    #qrcode {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 15px;
+        width: 250px;
+    }
+</style>

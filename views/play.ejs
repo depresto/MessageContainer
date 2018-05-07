@@ -1,0 +1,26 @@
+<div class="text-center">
+	<button id="start-record" type="button" class="btn btn-outline-dark btn-lg" onclick="play();">Play</button>
+
+	<h3>Share</h3>
+</div>
+<div id="qrcode"></div>
+
+<audio id="audio" src="/audio/<%- filename %>" ></audio>
+
+<script src="/script/qrcode.min.js"></script>
+<script>
+function play(){
+  var audio = document.getElementById("audio");
+  audio.play();
+}
+
+var current_URL = window.location.href;
+new QRCode(document.getElementById("qrcode"), current_URL);
+ </script>
+ <style>
+	#qrcode {
+		margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+	}
+</style>

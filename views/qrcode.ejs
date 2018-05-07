@@ -1,0 +1,15 @@
+<script src="/script/qrcode.min.js"></script>
+
+<div id="qrcode"></div>
+
+<script type="text/javascript">
+	var target = 'http://' + window.location.host + '/record/<%- pageid %>';
+	new QRCode(document.getElementById("qrcode"), target);
+</script>
+<style>
+	#qrcode {
+		margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+	}
+</style>
