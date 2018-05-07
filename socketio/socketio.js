@@ -18,6 +18,7 @@ module.exports = function(io){
 		
 		socket.on('join', function (data) {
 			deviceId = data.deviceId;
+			console.log('join:'+deviceId);
 
 			socket.join(data.deviceId);
 		});

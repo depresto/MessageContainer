@@ -33,7 +33,7 @@ app.use(handler.handlerCSRFError);
 app.use(morgan('tiny'));
 
 let server = app.listen(2375, function () {
-  console.log('Example app listening on port 2375!');
+  console.log('App listening on port 2375!');
 });
 
 var io     = app.io
