@@ -1,9 +1,10 @@
-const express 		=	require('express');
-const router 			= express.Router();
-const api 				= require('../controllers/api.controller.js');
-const socket_io   = require("socket.io");
-const io          = socket_io();
-const socketioAPI = require('../socketio/socketio')(io);
+const express 			=	require('express');
+const router 				= express.Router();
+const api 					= require('../controllers/api.controller.js');
+const apiPlayMusic 	= require('../controllers/apiPlayMusic.controller.js');
+const socket_io   	= require("socket.io");
+const io          	= socket_io();
+const socketioAPI 	= require('../socketio/socketio')(io);
 
 module.exports = (app) => {
 	app.io = io;
@@ -18,3 +19,9 @@ router.route('/b')
 
 router.route('/c')
 	.post(api.renderUploadImage);
+
+router.route('/uploadMusic')
+	.post(apiPlayMusic.renderUploadMusic);
+
+router.route('/getMusic/:mid')
+	.get(apiPlayMusic.renderGetMusic);
