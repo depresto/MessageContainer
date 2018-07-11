@@ -24,6 +24,12 @@ exports.renderAdminCommand = function(req, res) {
 	var password = '123456';
 
 	if (req.params.pass == password) {
+
+		for (var i=1; i<=4; i++) {
+			req.app.io.to('sound'+i).emit(req.params.command);
+		}
+
+		/*
 		switch (req.params.command) {
 			case 'play':
 				req.app.io.to('sound1').emit('play');
@@ -44,8 +50,9 @@ exports.renderAdminCommand = function(req, res) {
 				req.app.io.to('sound1').emit('defaultaudio');
 				break;
 
-			console.log('[INFO]admin '+req.params.command);
 		}
+		*/
+		console.log('[INFO]admin '+req.params.command);
 		res.send('OK');
 	}
 	else {
