@@ -24,12 +24,14 @@ exports.renderAdminCommand = function(req, res) {
 	var password = '123456';
 
 	if (req.params.pass == password) {
-		var data = null;
+		now  = Date.now
+		halfSecondAfter = now + 500;
+		data = {
+			'timestamp': halfSecondAfter
+		};
 
 		if (req.params.command == 'changeaudio') {
-			data = {
-				'url': '/exhibitfiles/test.mp3'
-			}
+			data['url'] = '/exhibitfiles/test.mp3';
 		}
 
 		for (var i=1; i<=4; i++) {
@@ -72,13 +74,19 @@ exports.renderTriggerOnOff = function(req, res) {
 
 	console.log('[INFO]Sofa: ' + trigger);
 
+	now  = Date.now
+	halfSecondAfter = now + 500;
+	data = {
+		'timestamp': halfSecondAfter
+	};
+
 	switch (trigger) {
 		case 'on':
-				req.app.io.to('sound1').emit('play');
+				req.app.io.to('sound1').emit('play', data);
 				console.log('[INFO]send play')
 				break;
 		case 'off':
-				req.app.io.to('sound1').emit('stop');
+				req.app.io.to('sound1').emit('stop', data);
 				break;
 	}
 

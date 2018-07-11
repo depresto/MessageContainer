@@ -16,25 +16,33 @@
   	var data = {'sid': 'sound<%= sid %>'};
 
   	socket.emit('joinexhibit', data);
-
   });
 
-	socket.on('play', function(msg) {
-		console.log('play')
+	socket.on('play', function(data) {
+		console.log('play');
+		now  = Date.now
+		timeout = data.timestamp - now;
+
 		audio.loop = true;
-		audio.play();
+		setTimeout(function(){ audio.play(); }, timeout);
 	});
 
-	socket.on('stop', function(msg) {
+	socket.on('stop', function(data) {
 		console.log('stop')
-		audio.loop = false;
+		now  = Date.now
+		timeout = data.timestamp - now;
+
+		setTimeout(function(){ audio.loop = false; }, timeout);
 	});
 
-	socket.on('stopnow', function(msg) {
+	socket.on('stopnow', function(data) {
 		console.log('stopnow')
-		audio.pause();
+		now  = Date.now
+		timeout = data.timestamp - now;
+
 		audio.currentTime = 0;
 		audio.loop = false;
+		setTimeout(function(){ audio.pause(); }, timeout);
 	});
 
 	socket.on('changeaudio', function(data) {
