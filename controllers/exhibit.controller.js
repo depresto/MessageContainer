@@ -38,6 +38,7 @@ exports.renderAdminCommand = function(req, res) {
 				console.log('[INFO]admin send stopnow')
 				break;
 		}
+		res.send('OK');
 	}
 	else {
 		res.send('Admin');
