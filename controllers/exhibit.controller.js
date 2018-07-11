@@ -1,8 +1,8 @@
 
 exports.renderTriggerOnOff = function(req, res) {
-	var trigger = req.params.trigger;
+	var trigger = req.body.trigger;
 
-	console.log(req.params);
+	console.log(req.body);
 	console.log(trigger)
 	res.send('Success!');
 }
