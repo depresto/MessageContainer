@@ -20,8 +20,10 @@
 
 	socket.on('play', function(data) {
 		console.log('play');
-		now  = Date.now
+		now  = Date.now()
 		timeout = data.timestamp - now;
+		console.log(timeout)
+		console.log(data.timestamp)
 
 		audio.loop = true;
 		setTimeout(function(){ audio.play(); }, timeout);
@@ -29,7 +31,7 @@
 
 	socket.on('stop', function(data) {
 		console.log('stop')
-		now  = Date.now
+		now  = Date.now()
 		timeout = data.timestamp - now;
 
 		setTimeout(function(){ audio.loop = false; }, timeout);
@@ -37,7 +39,7 @@
 
 	socket.on('stopnow', function(data) {
 		console.log('stopnow')
-		now  = Date.now
+		now  = Date.now()
 		timeout = data.timestamp - now;
 
 		audio.currentTime = 0;

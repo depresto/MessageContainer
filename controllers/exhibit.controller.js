@@ -24,8 +24,8 @@ exports.renderAdminCommand = function(req, res) {
 	var password = '123456';
 
 	if (req.params.pass == password) {
-		now  = Date.now
-		halfSecondAfter = now + 1000;
+		now  = Date.now()
+		halfSecondAfter = now + 500;
 		data = {
 			'timestamp': halfSecondAfter
 		};
@@ -74,8 +74,8 @@ exports.renderTriggerOnOff = function(req, res) {
 
 	console.log('[INFO]Sofa: ' + trigger);
 
-	now  = Date.now
-	halfSecondAfter = now + 1000;
+	now  = Date.now()
+	halfSecondAfter = now + 500;
 	data = {
 		'timestamp': halfSecondAfter
 	};
