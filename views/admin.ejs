@@ -1,7 +1,16 @@
-<div class="btn-group" role="group" style="margin: 0 auto; display: table;">
+<h5 class="text-center mt-4">Play command</h5>
+
+<div class="btn-group my-2" role="group" style="margin: 0 auto; display: table;">
 	<button class="btn btn-primary" onclick="httpGet('play')">Play</button>
 	<button class="btn btn-info" 		onclick="httpGet('stop')">Stop</button>
 	<button class="btn btn-danger" 	onclick="httpGet('stopnow')">Stop now</button>
+</div>
+
+<h5 class="text-center mt-4">Audio command</h5>
+
+<div class="btn-group my-2" role="group" style="margin: 0 auto; display: table;">
+	<div class="btn btn-primary" onclick="httpGet('changeaudio')">Change audio</div>
+	<div class="btn btn-info" onclick="httpGet('defaultaudio')">Default audio</div>
 </div>
 
 <script>

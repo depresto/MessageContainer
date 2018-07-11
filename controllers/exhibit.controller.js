@@ -27,16 +27,24 @@ exports.renderAdminCommand = function(req, res) {
 		switch (req.params.command) {
 			case 'play':
 				req.app.io.to('sound1').emit('play');
-				console.log('[INFO]admin send play')
 				break;
 			case 'stop':
 				req.app.io.to('sound1').emit('stop');
-				console.log('[INFO]admin send stop')
 				break;
 			case 'stopnow':
 				req.app.io.to('sound1').emit('stopnow');
-				console.log('[INFO]admin send stopnow')
 				break;
+			case 'changeaudio':
+				data = {
+					'url': '/exhibitfiles/test.mp3'
+				}
+				req.app.io.to('sound1').emit('changeaudio', data);
+				break;
+			case 'defaultaudio':
+				req.app.io.to('sound1').emit('defaultaudio');
+				break;
+
+			console.log('[INFO]admin '+req.params.command);
 		}
 		res.send('OK');
 	}

@@ -9,6 +9,7 @@
 
 <script>
 	var audio = document.querySelector('audio');
+	var source = document.querySelector('source');
 
   var socket = io();
   socket.on('connect', function(){ 
@@ -35,6 +36,16 @@
 		audio.currentTime = 0;
 		audio.loop = false;
 	});
+
+	socket.on('changeaudio', function(data) {
+		source.src = data.url;
+		audio.load();
+	});
+
+	socket.on('defaultaudio', function(data) {
+		source.src = '<%= audioPath %>';
+		audio.load();
+	})
 
 
 </script>
