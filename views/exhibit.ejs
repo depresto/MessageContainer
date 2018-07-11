@@ -29,4 +29,12 @@
 		audio.loop = false;
 	});
 
+	socket.on('stopnow', function(msg) {
+		console.log('stopnow')
+		audio.pause();
+		sound.currentTime = 0;
+		audio.loop = false;
+	});
+
+
 </script>
