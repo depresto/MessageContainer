@@ -24,9 +24,16 @@ exports.renderAdminCommand = function(req, res) {
 	var password = '123456';
 
 	if (req.params.pass == password) {
+		var data = null;
+
+		if (req.params.command == 'changeaudio') {
+			data = {
+				'url': '/exhibitfiles/test.mp3'
+			}
+		}
 
 		for (var i=1; i<=4; i++) {
-			req.app.io.to('sound'+i).emit(req.params.command);
+			req.app.io.to('sound'+i).emit(req.params.command, data);
 		}
 
 		/*
