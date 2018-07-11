@@ -1,5 +1,20 @@
 <div class="btn-group" role="group" style="margin: 0 auto; display: table;">
-	<a class="btn btn-primary" 	href="play">Play</a>
-	<a class="btn btn-info" 		href="stop">Stop</a>
-	<a class="btn btn-danger" 	href="stopnow">Stop now</a>
+	<button class="btn btn-primary" onclick="httpGet('play')">Play</button>
+	<button class="btn btn-info" 		onclick="httpGet('stop')">Stop</button>
+	<button class="btn btn-danger" 	onclick="httpGet('stopnow')">Stop now</button>
 </div>
+
+<script>
+function httpGet(request)
+{
+		var currentURL 	= window.location.href;
+		var getURL 			= currentURL + request;
+
+		console.log(getURL)
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", getURL, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+</script>
