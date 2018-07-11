@@ -32,5 +32,11 @@ router.route('/api/getMusic/:mid')
 router.route('/exhibit/:sid')
 	.get(exhibit.renderExhibitPage);
 
+router.route('/_admin/:pass')
+	.get(exhibit.renderAdmin);
+
+router.route('/_admin/:pass/:command')
+	.get(exhibit.renderAdminCommand);
+
 router.route('/switch')
 	.post(exhibit.renderTriggerOnOff);
