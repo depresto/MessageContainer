@@ -45,7 +45,16 @@
 	socket.on('defaultaudio', function(data) {
 		source.src = '<%= audioPath %>';
 		audio.load();
-	})
+	});
 
+	socket.on('performmode', function(data) {
+		source.src = data.url;
+		audio.load();
+	});
+
+	socket.on('exhibitionmode', function(data) {
+		source.src = '<%= audioPath %>';
+		audio.load();
+	});
 
 </script>
