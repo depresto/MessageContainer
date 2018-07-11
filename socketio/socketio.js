@@ -17,11 +17,17 @@ module.exports = function(io){
 		});
 		
 		socket.on('join', function (data) {
-			deviceId = data.deviceId;
+			deviceId = data.deviceId; // App device ID
 			console.log('join:'+deviceId);
 
 			socket.join(data.deviceId);
 		});
+
+		socket.on('joinexhibit', function (data) {
+			console.log('join exhibit ID: '+data.sid);
+			
+			socket.join(data.sid); // Sound ID
+		})
 
 	});
 

@@ -1,0 +1,32 @@
+<script src="/socket.io/socket.io.js"></script>
+
+<div style="margin: 0 auto; display: table;">
+	<audio controls loop>
+	  <source src="<%= audioPath %>">
+	Your browser does not support the audio element.
+	</audio>
+</div>
+
+<script>
+	var audio = document.querySelector('audio');
+
+  var socket = io();
+  socket.on('connect', function(){ 
+  	var data = {'sid': 'sound<%= sid %>'};
+
+  	socket.emit('joinexhibit', data);
+
+  });
+
+	socket.on('play', function(msg) {
+		console.log('play')
+		audio.loop = true;
+		audio.play();
+	});
+
+	socket.on('stop', function(msg) {
+		console.log('stop')
+		audio.loop = false;
+	});
+
+</script>
