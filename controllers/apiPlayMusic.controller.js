@@ -4,43 +4,42 @@
 	另外三軌播放預錄好的音檔（2個一般音箱＋1個低音音箱）
 	其中兩軌播放觀者錄音（2個一般音箱）
 
-	音訊範例
-	data:audio/mpeg;base64,iVBORw0KGgoAAAA
+	音訊範例為 .wav 檔案
 **/
 
 const redis 			= require("redis"),
     	client 			= redis.createClient();
 const fs 					= require('fs');
+const formidable 	= require('formidable');
 
 function uploadMusic(req, res, mid) {
-	var rawFile 	= req.body.VoiceFile;
 
-	if (!rawFile) {
+	var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+      // `file` is the name of the <input> field of type `file`
+      var old_path 	= files.VoiceFile.path,
+          file_size = files.VoiceFile.size,
+          file_ext 	= files.VoiceFile.name.split('.').pop(),
+          // index = old_path.lastIndexOf('/') + 1,
+          // file_name = old_path.substr(index),
+          filename 	= mid.toString();
+          new_path 	= __dirname + "/../public/upload/" + filename + '.' + file_ext;
 
-		res.send('CodeType=00');	
-		
-	}
-	else {
-
-		file64 		= rawFile.split(',')[1];
-		file 			= Buffer.from(file64, 'base64');
-		filename 	= mid.toString();
-		extension = rawFile.split(';')[0].split('/')[1];
-
-		filename  = filename + '.' + extension;
-		console.log(filename)
-
-		fs.writeFile(__dirname + "/../public/upload/" + filename, file, function(err) {
-	    if(err) {
-        console.log(err);
-
-        res.send('CodeType=00');
-        return;
-	    }
-
-	    res.send('CodeType=01');
-		}); 
-	}
+      fs.readFile(old_path, function(err, data) {
+          fs.writeFile(new_path, data, function(err) {
+              fs.unlink(old_path, function(err) {
+                  if (err) {
+                      res.status(500);
+                      res.send('CodeType=00');
+                  } else {
+                      res.status(200);
+                      res.send('CodeType=01');
+                  }
+              });
+          });
+      });
+  });
+ 
 }
 
 exports.renderUploadMusic = function(req, res) {
@@ -78,10 +77,10 @@ exports.renderGetMusic = function(req, res) {
       var val = parseInt(reply);
 
       if (val < 5) {
-      	filename  = mid.toString() + '.mpeg';
+      	filename  = mid.toString() + '.wav';
       } else {
       	currentID = val - (4 - mid);
-      	filename  = currentID.toString() + '.mpeg';
+      	filename  = currentID.toString() + '.wav';
       }
 
       res.send('FilePath=' + filename);

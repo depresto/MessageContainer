@@ -6,11 +6,13 @@ var morgan 					= require('morgan');
 var cookieParser 		= require('cookie-parser')
 var csrf 						= require('csurf')
 var bodyParser 			= require('body-parser');
+var cors 						= require('cors')
 var socket_io    		= require('socket.io');
 var io 							= socket_io();
 
 var handler 				= require('./config/handler');
 
+app.use(cors())
 
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
