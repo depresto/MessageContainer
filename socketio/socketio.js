@@ -1,15 +1,10 @@
 module.exports = function(io){
 
 	io.on('connection', function(socket){
-	    console.log('A user connected');
-	    socket.on('disconnect', function(){
-	        console.log('user disconnected');
-	    });
-	});
-
-	io.on('connection', function(socket){
+		console.log('A user connected');
 
 		var deviceId = '';
+		var sid = null;
 
 		socket.on('test', function(){
 			console.log('test');
@@ -25,9 +20,25 @@ module.exports = function(io){
 
 		socket.on('joinexhibit', function (data) {
 			console.log('join exhibit ID: '+data.sid);
-			
+			sid = data.sid;
+
 			socket.join(data.sid); // Sound ID
+			io.to('admin').emit('userjoin', data);
 		})
+
+		socket.on('joinadmin', function (data) {
+			console.log('join admin');
+			
+			socket.join('admin'); // Sound ID
+		})
+
+		socket.on('disconnect', function(){
+      console.log('user disconnected');
+
+      if (sid) {
+      	io.to('admin').emit('userexit', {sid: sid});
+      }
+    });
 
 	});
 

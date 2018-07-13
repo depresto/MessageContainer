@@ -20,6 +20,14 @@
 	<div class="btn btn-info" onclick="httpGet('defaultaudio')">Default audio</div>
 </div>
 
+<div class="text-center">
+	<p>Device1: <span id="sound1"></span></p>
+	<p>Device2: <span id="sound2"></span></p>
+	<p>Device3: <span id="sound3"></span></p>
+	<p>Device4: <span id="sound4"></span></p>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
 
 <script>
 function httpGet(request)
@@ -34,4 +42,22 @@ function httpGet(request)
     xmlHttp.send( null );
     return xmlHttp.responseText;
 }
+
+var socket = io();
+socket.on('connect', function(){ 
+	socket.emit('joinadmin');
+});
+
+socket.on('userjoin', function(data) {
+	var sid = data.sid;
+
+	document.getElementById(sid).innerHTML = 'connected';
+});
+
+socket.on('userexit', function(data) {
+	var sid = data.sid;
+
+	document.getElementById(sid).innerHTML = 'disconnected';
+});
+
 </script>
