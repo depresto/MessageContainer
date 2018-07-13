@@ -44,10 +44,36 @@ exports.renderAdminCommand = function(req, res) {
 		else if (req.params.command == 'exhibitionmode') {
 			client.set(key, 'exhibitionmode', redis.print);
 
-			// TODO: exhibit
-			data['url'] = '/exhibitfiles/test.mp3';
-			for (var i=1; i<=4; i++) {
-				req.app.io.to('sound'+i).emit(req.params.command, data);
+			client.get('mc-currentCount', function(err, reply) {
+
+				var sendURL = [
+					null,
+					'/exhibitfiles/test.mp3',
+					'/exhibitfiles/test.mp3',
+					'/exhibitfiles/test.mp3',
+					'/exhibitfiles/test.mp3'
+				]
+
+				if (reply != null) {
+
+		      var val = parseInt(reply);
+
+		      // TODO: exhibit current ID
+		      if (val == 1) {
+		      	sendURL[3] = sendURL[4] = '/exhibitfiles/1-Audio.wav';
+		      } 
+		      else {
+		      	sendURL[3] = '/exhibitfiles/1-Audio.wav';
+		      	sendURL[4] = '/exhibitfiles/2-Audio.wav';
+		      }
+		    }
+
+				for (var i=1; i<=4; i++) {
+					data['url'] = sendURL[i];
+					req.app.io.to('sound'+i).emit(req.params.command, data);
+				}
+
+				res.send('OK');
 			}
 		}
 		else {
@@ -113,6 +139,7 @@ exports.renderTriggerOnOff = function(req, res) {
 				for (var i=1; i<=4; i++) {
 					req.app.io.to('sound'+i).emit('stop', data);
 				}
+				console.log('[INFO]send stop')
 				break;
 	}
 
