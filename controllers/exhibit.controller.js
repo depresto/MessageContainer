@@ -1,3 +1,5 @@
+const redis 			= require("redis"),
+    	client 			= redis.createClient();
 
 exports.renderExhibitPage = function(req, res) {
 	res.render('exhibit', {
@@ -22,6 +24,7 @@ exports.renderAdmin = function(req, res) {
 
 exports.renderAdminCommand = function(req, res) {
 	var password = '123456';
+	var key = "mc-currentMode";
 
 	if (req.params.pass == password) {
 		now  = Date.now()
@@ -30,12 +33,31 @@ exports.renderAdminCommand = function(req, res) {
 			'timestamp': halfSecondAfter
 		};
 
-		if (req.params.command == 'changeaudio') {
-			data['url'] = '/exhibitfiles/test.mp3';
-		}
+		if (req.params.command == 'performmode') {
+			client.set(key, 'performmode', redis.print);
 
-		for (var i=1; i<=4; i++) {
-			req.app.io.to('sound'+i).emit(req.params.command, data);
+			for (var i=1; i<=4; i++) {
+				data['url'] = '/exhibitfiles/' + i +'-Audio.wav';
+				req.app.io.to('sound'+i).emit(req.params.command, data);
+			}
+		}
+		else if (req.params.command == 'exhibitionmode') {
+			client.set(key, 'exhibitionmode', redis.print);
+
+			// TODO: exhibit
+			data['url'] = '/exhibitfiles/test.mp3';
+			for (var i=1; i<=4; i++) {
+				req.app.io.to('sound'+i).emit(req.params.command, data);
+			}
+		}
+		else {
+			if (req.params.command == 'changeaudio') {
+				data['url'] = '/exhibitfiles/test.mp3';
+			}
+
+			for (var i=1; i<=4; i++) {
+				req.app.io.to('sound'+i).emit(req.params.command, data);
+			}
 		}
 
 		/*

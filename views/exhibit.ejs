@@ -7,9 +7,14 @@
 	</audio>
 </div>
 
+<p id="second" class="text-center"></p>
+<p id="timeout" class="text-center"></p>
+
 <script>
 	var audio = document.querySelector('audio');
 	var source = document.querySelector('source');
+	var second_text = document.querySelector('p#second');
+	var timeout_text = document.querySelector('p#timeout');
 
   var socket = io();
   socket.on('connect', function(){ 
@@ -25,6 +30,9 @@
 		console.log(timeout)
 		console.log(data.timestamp)
 
+		second_text.innerHTML = data.timestamp;
+		timeout_text.innerHTML = timeout;
+
 		audio.loop = true;
 		setTimeout(function(){ audio.play(); }, timeout);
 	});
@@ -34,6 +42,9 @@
 		now  = Date.now()
 		timeout = data.timestamp - now;
 
+		second_text.innerHTML = data.timestamp;
+		timeout_text.innerHTML = timeout;
+
 		setTimeout(function(){ audio.loop = false; }, timeout);
 	});
 
@@ -41,6 +52,9 @@
 		console.log('stopnow')
 		now  = Date.now()
 		timeout = data.timestamp - now;
+
+		second_text.innerHTML = data.timestamp;
+		timeout_text.innerHTML = timeout;
 
 		audio.currentTime = 0;
 		audio.loop = false;
@@ -63,7 +77,7 @@
 	});
 
 	socket.on('exhibitionmode', function(data) {
-		source.src = '<%= audioPath %>';
+		source.src = data.url;
 		audio.load();
 	});
 
