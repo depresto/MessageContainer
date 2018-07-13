@@ -104,11 +104,15 @@ exports.renderTriggerOnOff = function(req, res) {
 
 	switch (trigger) {
 		case 'on':
-				req.app.io.to('sound1').emit('play', data);
+				for (var i=1; i<=4; i++) {
+					req.app.io.to('sound'+i).emit('play', data);
+				}
 				console.log('[INFO]send play')
 				break;
 		case 'off':
-				req.app.io.to('sound1').emit('stop', data);
+				for (var i=1; i<=4; i++) {
+					req.app.io.to('sound'+i).emit('stop', data);
+				}
 				break;
 	}
 
