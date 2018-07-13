@@ -6,19 +6,20 @@
 	<button class="btn btn-danger" 	onclick="httpGet('stopnow')">Stop now</button>
 </div>
 
-<h5 class="text-center mt-4">Audio command</h5>
-
-<div class="btn-group my-2" role="group" style="margin: 0 auto; display: table;">
-	<div class="btn btn-primary" onclick="httpGet('changeaudio')">Change audio</div>
-	<div class="btn btn-info" onclick="httpGet('defaultaudio')">Default audio</div>
-</div>
-
 <h5 class="text-center mt-4">Change mode</h5>
 
 <div class="btn-group my-2" role="group" style="margin: 0 auto; display: table;">
 	<div class="btn btn-primary" onclick="httpGet('performmode')">Perform mode</div>
 	<div class="btn btn-info" onclick="httpGet('exhibitionmode')">Exhibition mode</div>
 </div>
+
+<h5 class="text-center mt-4">Audio command(Just for testing)</h5>
+
+<div class="btn-group my-2" role="group" style="margin: 0 auto; display: table;">
+	<div class="btn btn-primary" onclick="httpGet('changeaudio')">Change audio</div>
+	<div class="btn btn-info" onclick="httpGet('defaultaudio')">Default audio</div>
+</div>
+
 
 <script>
 function httpGet(request)

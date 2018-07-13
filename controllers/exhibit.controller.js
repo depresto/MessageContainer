@@ -73,8 +73,9 @@ exports.renderAdminCommand = function(req, res) {
 					req.app.io.to('sound'+i).emit(req.params.command, data);
 				}
 
-				res.send('OK');
-			}
+				// res.send('OK');
+				// return;
+			});
 		}
 		else {
 			if (req.params.command == 'changeaudio') {
