@@ -19,7 +19,7 @@ app.use(expressLayouts);
 
 app.use(cookieParser())
 app.use(bodyParser.json({limit: '50mb'})); // support json encoded bodies
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // support encoded bodies
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 1000000 })); // support encoded bodies
 
 app.set('layout', 'layouts/layout');
 
