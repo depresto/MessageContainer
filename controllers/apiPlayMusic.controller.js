@@ -14,6 +14,7 @@ const formidable 	= require('formidable');
 
 function uploadMusic(req, res, mid) {
 
+	/*
 	var form = new formidable.IncomingForm();
     form.parse(req, function(err, fields, files) {
       // `file` is the name of the <input> field of type `file`
@@ -85,7 +86,65 @@ function uploadMusic(req, res, mid) {
 				res.send('CodeType=00');
 	    }
   });
- 
+ 	*/
+
+ 	var VoiceFile 		= req.files.VoiceFile;
+ 	var filepath 			= __dirname + "/../public/upload/" + mid + '.wav';
+
+ 	if (VoiceFile) {
+ 		fs.writeFile(filepath, VoiceFile, function(err) {
+      	if (err) {
+            res.status(500);
+            res.send('CodeType=00');
+        } else {
+          	client.get('mc-currentMode', function(err, reply) {
+          		now  = Date.now()
+							halfSecondAfter = now + 100;
+          		sendData = {
+								'timestamp': halfSecondAfter
+							};
+
+        			var sendURL = [
+								null,
+								'/exhibitfiles/default_exhibit.wav',
+								'/exhibitfiles/default_exhibit.wav',
+								'/exhibitfiles/default_exhibit.wav'
+							]
+
+							console.log('[INFO]currentID=' + mid);
+
+          		if (reply == 'exhibitionmode') {
+            		if (mid == 1) {
+					      	sendURL[2] = sendURL[3] = '/upload/' + mid +'.wav';
+					      } 
+					      else {
+					      	sendURL[2] = '/upload/' + (mid - 1) + '.wav';
+					      	sendURL[3] = '/upload/' + mid +'.wav';
+					      }
+          		}
+          		else {
+          			sendURL[1] = '/exhibitfiles/perform.wav';
+          		}
+
+				      for (var i=1; i<=3; i++) {
+								sendData['url'] = sendURL[i];
+								req.app.io.to('sound'+i).emit('changeaudio', sendData);
+							}
+
+							console.log('[INFO]Send exhibit audio.');
+
+              res.status(200);
+              res.send('CodeType=01');
+              
+            });
+        }
+  	});
+ 	}
+ 	else {
+  	res.status(500);
+		res.send('CodeType=00');
+  }
+
 }
 
 exports.renderUploadMusic = function(req, res) {
