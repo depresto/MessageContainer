@@ -5,7 +5,7 @@ exports.renderExhibitPage = function(req, res) {
 	res.render('exhibit', {
 		title: 'Exhibition',
 		sid: req.params.sid,
-		audioPath: '/exhibitfiles/1-Audio.wav'
+		audioPath: '/exhibitfiles/default_exhibit.wav'
 	})
 }
 
@@ -36,7 +36,7 @@ exports.renderAdminCommand = function(req, res) {
 		if (req.params.command == 'performmode') {
 			client.set(key, 'performmode', redis.print);
 
-			for (var i=1; i<=4; i++) {
+			for (var i=1; i<=3; i++) {
 				data['url'] = '/exhibitfiles/' + i +'-Audio.wav';
 				req.app.io.to('sound'+i).emit(req.params.command, data);
 			}
@@ -48,10 +48,9 @@ exports.renderAdminCommand = function(req, res) {
 
 				var sendURL = [
 					null,
-					'/exhibitfiles/test.mp3',
-					'/exhibitfiles/test.mp3',
-					'/exhibitfiles/test.mp3',
-					'/exhibitfiles/test.mp3'
+					'/exhibitfiles/default_exhibit.wav',
+					'/exhibitfiles/default_exhibit.wav',
+					'/exhibitfiles/default_exhibit.wav'
 				]
 
 				if (reply != null) {
@@ -60,15 +59,15 @@ exports.renderAdminCommand = function(req, res) {
 
 		      // TODO: exhibit current ID
 		      if (val == 1) {
-		      	sendURL[3] = sendURL[4] = '/exhibitfiles/1-Audio.wav';
+		      	sendURL[2] = sendURL[3] = '/upload/' + val +'.wav';
 		      } 
 		      else {
-		      	sendURL[3] = '/exhibitfiles/1-Audio.wav';
-		      	sendURL[4] = '/exhibitfiles/2-Audio.wav';
+		      	sendURL[2] = '/upload/' + (val - 1) + '.wav';
+		      	sendURL[3] = '/upload/' + val +'.wav';
 		      }
 		    }
 
-				for (var i=1; i<=4; i++) {
+				for (var i=1; i<=3; i++) {
 					data['url'] = sendURL[i];
 					req.app.io.to('sound'+i).emit(req.params.command, data);
 				}
@@ -77,12 +76,15 @@ exports.renderAdminCommand = function(req, res) {
 				// return;
 			});
 		}
+		else if (req.params.command == 'resetcount') {
+			client.set('mc-currentCount', 0, redis.print);
+		}
 		else {
 			if (req.params.command == 'changeaudio') {
 				data['url'] = '/exhibitfiles/test.mp3';
 			}
 
-			for (var i=1; i<=4; i++) {
+			for (var i=1; i<=3; i++) {
 				req.app.io.to('sound'+i).emit(req.params.command, data);
 			}
 		}
@@ -131,13 +133,13 @@ exports.renderTriggerOnOff = function(req, res) {
 
 	switch (trigger) {
 		case 'on':
-				for (var i=1; i<=4; i++) {
+				for (var i=1; i<=3; i++) {
 					req.app.io.to('sound'+i).emit('play', data);
 				}
 				console.log('[INFO]send play')
 				break;
 		case 'off':
-				for (var i=1; i<=4; i++) {
+				for (var i=1; i<=3; i++) {
 					req.app.io.to('sound'+i).emit('stop', data);
 				}
 				console.log('[INFO]send stop')
