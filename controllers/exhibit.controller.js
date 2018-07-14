@@ -36,8 +36,15 @@ exports.renderAdminCommand = function(req, res) {
 		if (req.params.command == 'performmode') {
 			client.set(key, 'performmode', redis.print);
 
+			var sendURL = [
+				null,
+				'/exhibitfiles/perform.wav',
+				'/exhibitfiles/default_exhibit.wav',
+				'/exhibitfiles/default_exhibit.wav'
+			]
+
 			for (var i=1; i<=3; i++) {
-				data['url'] = '/exhibitfiles/' + i +'-Audio.wav';
+				data['url'] = sendURL[i];
 				req.app.io.to('sound'+i).emit(req.params.command, data);
 			}
 		}

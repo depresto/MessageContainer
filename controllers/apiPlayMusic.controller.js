@@ -59,7 +59,10 @@ function uploadMusic(req, res, mid) {
 										      	sendURL[2] = '/upload/' + (mid - 1) + '.wav';
 										      	sendURL[3] = '/upload/' + mid +'.wav';
 										      }
-			              		};
+			              		}
+			              		else {
+			              			sendURL[1] = '/exhibitfiles/perform.wav';
+			              		}
 
 									      for (var i=1; i<=3; i++) {
 													sendData['url'] = sendURL[i];
