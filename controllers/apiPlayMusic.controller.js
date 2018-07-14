@@ -10,7 +10,7 @@
 const redis 			= require("redis"),
     	client 			= redis.createClient();
 const fs 					= require('fs');
-const formidable 	= require('formidable');
+// const formidable 	= require('formidable');
 
 function uploadMusic(req, res, mid) {
 
@@ -88,7 +88,7 @@ function uploadMusic(req, res, mid) {
   });
  	*/
 
- 	var VoiceFile 		= req.files.VoiceFile;
+ 	var VoiceFile 		= req.file;
  	var filepath 			= __dirname + "/../public/upload/" + mid + '.wav';
 
  	if (VoiceFile) {
