@@ -96,6 +96,8 @@ function uploadMusic(req, res, mid) {
       	if (err) {
             res.status(500);
             res.send('CodeType=00');
+
+            return false;
         } else {
           	client.get('mc-currentMode', function(err, reply) {
           		now  = Date.now()
@@ -135,6 +137,8 @@ function uploadMusic(req, res, mid) {
 
               res.status(200);
               res.send('CodeType=01');
+
+              return true;
               
             });
         }
@@ -143,6 +147,8 @@ function uploadMusic(req, res, mid) {
  	else {
   	res.status(500);
 		res.send('CodeType=00');
+
+		return false;
   }
 
 }
@@ -161,9 +167,11 @@ exports.renderUploadMusic = function(req, res) {
 
     val = val + 1;
 
-    uploadMusic(req, res, val);
+    succees = uploadMusic(req, res, val);
 
-    client.set(key, val, redis.print);
+    if (succees) {
+    	client.set(key, val, redis.print);
+    }
 	});
 }
 
