@@ -9,8 +9,8 @@ const io          	= socket_io();
 const socketioAPI 	= require('../socketio/socketio')(io);
 
 
-var upload = multer({ dest: __dirname + "/../public/upload/" });
-var type = upload.single('VoiceFile');
+// var upload = multer({ dest: __dirname + "/../public/upload/" });
+// var type = upload.single('VoiceFile');
 
 
 module.exports = (app) => {
@@ -28,7 +28,8 @@ router.route('/api/c')
 	.post(api.renderUploadImage);
 
 router.route('/api/uploadMusic')
-	.post(type, apiPlayMusic.renderUploadMusic);
+	.post(apiPlayMusic.renderUploadMusic);
+	// .post(type, apiPlayMusic.renderUploadMusic);
 
 router.route('/api/getMusic/:mid')
 	.get(apiPlayMusic.renderGetMusic);

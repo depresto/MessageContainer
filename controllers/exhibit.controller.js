@@ -12,7 +12,7 @@ exports.renderExhibitPage = function(req, res) {
 	res.render('exhibit', {
 		title: 'Exhibition',
 		sid: req.params.sid,
-		audioPath: '/exhibitfiles/default_exhibit.wav'
+		audioPath: '/exhibitfiles/default_exhibit.m4a'
 	})
 }
 
@@ -46,8 +46,8 @@ exports.renderAdminCommand = function(req, res) {
 			var sendURL = [
 				null,
 				'/exhibitfiles/perform.wav',
-				'/exhibitfiles/default_exhibit.wav',
-				'/exhibitfiles/default_exhibit.wav'
+				'/exhibitfiles/default_exhibit.m4a',
+				'/exhibitfiles/default_exhibit.m4a'
 			]
 
 			for (var i=1; i<=3; i++) {
@@ -62,9 +62,9 @@ exports.renderAdminCommand = function(req, res) {
 
 				var sendURL = [
 					null,
-					'/exhibitfiles/default_exhibit.wav',
-					'/exhibitfiles/default_exhibit.wav',
-					'/exhibitfiles/default_exhibit.wav'
+					'/exhibitfiles/default_exhibit.m4a',
+					'/exhibitfiles/default_exhibit.m4a',
+					'/exhibitfiles/default_exhibit.m4a'
 				]
 
 				if (reply != null) {

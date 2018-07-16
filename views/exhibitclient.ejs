@@ -109,7 +109,9 @@ function stopRecording()
     
     // 傳 Request             
     var fd = new FormData();
-    var f = new File([recorder.getBlob()], "Test.wav");
+    var f = new File([recorder.getBlob()], "Test.wav", {
+        type: 'audio/wav'
+    });
     
     fd.append("DeviceId", 0);
     fd.append("Content", "Test");
@@ -119,8 +121,7 @@ function stopRecording()
     xhr.upload.addEventListener("load", function (e) {
                 console.log(e);
             }, false);
-    xhr.open("POST", "", true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.open("POST", "/api/uploadMusic");
     xhr.send(fd);  
     
     // 跳到另外一個頁面
