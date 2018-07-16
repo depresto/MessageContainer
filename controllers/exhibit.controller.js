@@ -1,6 +1,13 @@
 const redis 			= require("redis"),
     	client 			= redis.createClient();
 
+exports.renderExhibitClient = function(req, res) {
+	res.render('exhibitclient', {
+		title: 'MESSAGE CONTAINER',
+		layout: 'layouts/exhibit'
+	})
+}
+
 exports.renderExhibitPage = function(req, res) {
 	res.render('exhibit', {
 		title: 'Exhibition',

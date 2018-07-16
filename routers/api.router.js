@@ -34,6 +34,8 @@ router.route('/api/getMusic/:mid')
 	.get(apiPlayMusic.renderGetMusic);
 
 
+router.route('/exhibit')
+	.get(exhibit.renderExhibitClient);
 
 router.route('/exhibit/:sid')
 	.get(exhibit.renderExhibitPage);

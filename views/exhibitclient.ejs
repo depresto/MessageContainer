@@ -1,0 +1,155 @@
+<div id="fullpage">
+    <div class="section" id="section0">
+        <!-- 第一頁 -->
+        <div class="slide" id="Introduction">
+            <img src="image/Text/Introduction.png" class="Introduction_Text">
+            <img src="image/IntroductionNextBtn.png" class="Introduction_Arrow" onclick="Introduction_Button_Press()">
+        </div>
+        
+        <!-- 第二頁 -->
+        <div class="slide" id="Recording">
+            <div class="container text-center">
+                <!-- 錄音前 -->
+                <div id="before_recorder_div">
+                    <img src="image/StartRecord.png" id="RecordingBtn_Start" class="RecordingBtn" onclick="startRecording()">
+                    <img src="image/Text/StartRecord.png" class="StartRecord_Text">
+                </div>
+                
+                <!-- 錄音時 -->
+                <div id="recording_div" style="display: none;">
+                    <img src="image/Recording.png" id="RecordingBtn_Start" class="RecordingBtn" onclick="stopRecording()">
+                    <img src="image/Text/StartRecord.png" class="StartRecord_Text">
+                    
+                    
+                    <!--<audio id="testPlay" controls style="display: none;"></audio>-->
+                    <audio id="testPlay" controls autoplay></audio>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 第三頁 -->
+        <div class="slide" id="Ending">
+            <img src="image/Text/Ending.png" class="Ending_Text">
+        </div>
+        
+        <!-- Footer -->
+        <img src="image/Text/Footer.png" class="Text_Footer">
+    </div>
+</div>
+
+<script type="text/javascript" src="script/HZRecorder/HZRecorder.js"></script>
+
+<!-- Full Page -->
+<link rel="stylesheet" type="text/css" href="script/fullpage/fullpage.css">
+<script type="text/javascript" src="script/fullpage/fullpage.js"></script>
+
+<style>
+.section {
+	position: relative;
+}
+.Introduction_Text{
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+}
+.Introduction_Arrow{
+    position: absolute;
+    bottom: 200px;
+    right: 67%;     /* 這邊是因為有三個 slide，每個 slide 都 33%，所以要貼級的話，一定要 right 66% (33% x 2)  */
+    
+    width: 15%;
+}
+.RecordingBtn{
+    border-top: 100px solid transparent;
+    width: 65%;
+}
+
+.StartRecord_Text{
+    border-top: 50px solid transparent;
+    width: 85%;
+}
+.Ending_Text{
+    position: relative;
+    top: -100px;
+    width: 80%;
+}
+.Text_Footer{
+    position: fixed;
+    bottom: 5%;
+    width: 35%;
+    left: 33%;
+}
+</style>
+
+<script>
+var recorder = null;            // 錄音變數
+var FullPageAPI = null;            // 頁面控制
+
+/*
+錄音專用
+*/
+function startRecording() 
+{
+    HZRecorder.get(function (rec) {
+        recorder = rec;
+        recorder.start();
+        
+        // 文字
+        $("#before_recorder_div").hide();
+        $("#recording_div").show();
+        
+    });
+}
+function stopRecording()
+{
+    recorder.stop();
+    
+    // 測試播放用
+    recorder.play($("#testPlay")[0]);
+    
+    // 傳 Request             
+    var fd = new FormData();
+    var f = new File([recorder.getBlob()], "Test.wav");
+    
+    fd.append("DeviceId", 0);
+    fd.append("Content", "Test");
+    fd.append("VoiceFile", f);
+    
+    var xhr = new XMLHttpRequest();
+    xhr.upload.addEventListener("load", function (e) {
+                console.log(e);
+            }, false);
+    xhr.open("POST", "", true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.send(fd);  
+    
+    // 跳到另外一個頁面
+    RecordingFinish();
+}
+
+/*
+這邊是 Custom Button 的按鈕
+*/ 
+function Introduction_Button_Press()
+{
+    if(FullPageAPI != null)
+        FullPageAPI.moveSlideRight();
+}
+function RecordingFinish()
+{
+    if(FullPageAPI != null)
+        FullPageAPI.moveSlideRight();
+}
+
+/*
+JQuery
+*/
+$(function(){
+    FullPageAPI = new fullpage('#fullpage', {
+        sectionsColor: ['#FFFFFF'],
+        licenseKey: "OPEN-SOURCE-GPLV3-LICENSE",
+        controlArrows: false
+        //anchors: ["Introduction"]
+    });
+});
+</script>
