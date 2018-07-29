@@ -14,13 +14,13 @@
                 <!-- 錄音前 -->
                 <div id="before_recorder_div">
                     <img src="image/StartRecord.png" id="RecordingBtn_Start" class="RecordingBtn" onclick="startRecording()">
-                    <img src="image/Text/StartRecord.png" class="StartRecord_Text">
+                    <!-- <img src="image/Text/StartRecord.png" class="StartRecord_Text"> -->
                 </div>
                 
                 <!-- 錄音時 -->
                 <div id="recording_div" style="display: none;">
                     <img src="image/Recording.png" id="RecordingBtn_Start" class="RecordingBtn" onclick="stopRecording()">
-                    <img src="image/Text/StartRecord.png" class="StartRecord_Text">
+                    <!-- <img src="image/Text/StartRecord.png" class="StartRecord_Text"> -->
                     
                     
                     <!--<audio id="testPlay" controls style="display: none;"></audio>-->
@@ -31,7 +31,7 @@
         
         <!-- 第三頁 -->
         <div class="slide" id="Ending">
-            <img src="image/Text/Ending.png" class="Ending_Text">
+            <!-- <img src="image/Text/Ending.png" class="Ending_Text"> -->
         </div>
         
         <!-- Footer -->
@@ -62,8 +62,8 @@
     width: 15%;
 }
 .RecordingBtn{
-    border-top: 100px solid transparent;
-    width: 65%;
+    /*border-top: 100px solid transparent;*/
+    width: 90%;
 }
 
 .StartRecord_Text{
@@ -78,8 +78,11 @@
 .Text_Footer{
     position: fixed;
     bottom: 5%;
-    width: 35%;
-    left: 33%;
+    width: 40%;
+    left: 30%;
+}
+audio {
+    display: none;
 }
 </style>
 
